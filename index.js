@@ -6,6 +6,10 @@ var port = 3000;
 app.set('view engine', 'pug');
 app.set('views', './views');
 
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+//sử dụng req.body sau khi đã install body parse
+
 
 var users = [
 	{id: 1, name: 'Hoa'},
@@ -38,6 +42,16 @@ app.get('/users/search', function(req, res){
 	})
 });
 
+app.get('/users/create', function(req, res){
+	res.render('users/create')
+});
+// lay data trong file create
+app.post('/users/create', function(req,res){
+	users.push(req.body);
+	//post lưu trữ thông tin ng dùng gửi lên
+	//redirect đưa ng dùng về trang index với những data đã update
+	res.redirect('/users');
+});
 
 app.listen(port, function() {
 	console.log('Server listening on port' + port)
